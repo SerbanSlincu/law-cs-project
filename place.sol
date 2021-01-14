@@ -1,14 +1,14 @@
 interface Place {
     /* called by one "positive" Visit */
-    function notifyRisk() external view;
+    function notifyRisk();
     
-    function visit(DateTime) external view returns(Visit);
+    function visit(DateTime) returns(Visit);
     
-    function clean() external view;
+    function clean();
 }
 
 contract Place is Place {
-    Visit[] visits;
+    private Visit[] visits;
     
     constructor() public {
         visits = new Visit[];
@@ -25,13 +25,15 @@ contract Place is Place {
         }
     }
     
-    function visit(DateTime dateTime) external view {
-        Visit visit = new Visit(dateTime, msg.sender);
+    // isOwned
+    function visit(DateTime dateTime, address user) {
+        Visit visit = new Visit(dateTime, user);
         visits.push(visit);
         returns visit;
     }
     
-    function clean() external view {
+    // isOwned
+    function clean() {
         
     }
 }

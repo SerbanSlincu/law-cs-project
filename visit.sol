@@ -3,7 +3,7 @@ interface Visit {
     function recordPositiveTest(NHSCredentials) external view;
     
     /* called only by the corresponding Place */
-    function notifyRisk(Place) external view;
+    function notifyRisk(Place);
 }
 
 contract Visit is Visit {
@@ -18,7 +18,7 @@ contract Visit is Visit {
         place = msg.sender;
     }
    
-    function recordPositiveTest(NHSCredentials nhsCredentials) external view{
+    function recordPositiveTest(NHSCredentials nhsCredentials) {
         // something with isOwned by the user
         if (nhsCredentials.verify(user)) {
             riskState = true;
@@ -26,7 +26,7 @@ contract Visit is Visit {
         }
     }
    
-    function notifyRisk() external {
+    function notifyRisk() {
         // msg.sender should == place
         // something with isOwned by the place
         riskState = true;
