@@ -11,6 +11,7 @@ contract Visit is Ownable {
     uint private timestamp;
    
     constructor(Place _place, address _user, uint _timestamp) {
+        riskState = false;
         place = _place;
         user = _user;
         timestamp = _timestamp;

@@ -11,6 +11,12 @@ contract Place is Ownable {
     constructor() {} 
     
     function notifyRisk(Visit infectedVisit) external {
+        bool trackedVisit = false;
+        for (uint i = 0; i < visits.length; i ++) {
+            trackedVisit = trackedVisit || (visits[i] == infectedVisit);
+        }
+        require(trackedVisit, "Place: caller is not a tracked visit");
+
         for (uint i = 0; i < visits.length; i ++) {
             Visit currVisit = visits[i];
             if (dateTime.closeTo(currVisit.getTimestamp(), infectedVisit.getTimestamp())) {
