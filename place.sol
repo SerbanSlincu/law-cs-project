@@ -26,6 +26,12 @@ contract Place is Ownable {
     }
     
     function clean() external onlyOwner {
-        
+        Visit[] storage updatedVisits;
+        for (uint i = 0; i < visits.length; i ++) {
+            if (dateTime.closeTo(visits[i].getTimestamp(), block.timestamp)) {
+                updatedVisits.push(visits[i]);
+            }
+        }
+        visits = updatedVisits;
     }
 }
