@@ -1,39 +1,32 @@
-interface Place {
-    /* called by one "positive" Visit */
-    function notifyRisk();
-    
-    function visit(DateTime) returns(Visit);
-    
-    function clean();
-}
+pragma solidity ^0.8.0;
 
-contract Place is Place {
-    private Visit[] visits;
+import "visit.sol";
+import "DateTime.sol";
+
+contract Place {
+    Visit[] private visits;
+    DateTime dateTime;
     
-    constructor() public {
-        visits = new Visit[];
-    } 
+    constructor() {} 
     
-    function notifyRisk() {
-        Visit infectedVisit = msg.sender;
-        
+    function notifyRisk(Visit infectedVisit) external {
         for (uint i = 0; i < visits.length; i ++) {
-            Visit visit = visits[i];
-            if (visit.dateTime.closeTo(infectedVisit.dateTime)) {
-                visit.notifyRisk();
+            Visit currVisit = visits[i];
+            if (dateTime.closeTo(currVisit.getTimestamp(), infectedVisit.getTimestamp())) {
+                currVisit.notifyRisk();
             }
         }
     }
     
     // isOwned
-    function visit(DateTime dateTime, address user) {
-        Visit visit = new Visit(dateTime, user);
-        visits.push(visit);
-        returns visit;
+    function visitFrom(address user, uint timestamp) external returns(Visit) {
+        Visit newVisit = new Visit(this, user, timestamp);
+        visits.push(newVisit);
+        return newVisit;
     }
     
     // isOwned
-    function clean() {
+    function clean() external {
         
     }
 }
