@@ -1,9 +1,10 @@
 pragma solidity ^0.8.0;
 
 import "visit.sol";
+import "ownable.sol";
 import "DateTime.sol";
 
-contract Place {
+contract Place is Ownable {
     Visit[] private visits;
     DateTime dateTime;
     
@@ -18,15 +19,13 @@ contract Place {
         }
     }
     
-    // isOwned
-    function visitFrom(address user, uint timestamp) external returns(Visit) {
+    function visitFrom(address user, uint timestamp) external onlyOwner returns(Visit) {
         Visit newVisit = new Visit(this, user, timestamp);
         visits.push(newVisit);
         return newVisit;
     }
     
-    // isOwned
-    function clean() external {
+    function clean() external onlyOwner {
         
     }
 }

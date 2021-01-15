@@ -1,9 +1,10 @@
 pragma solidity ^0.8.0;
 
 import "place.sol";
+import "ownable.sol";
 import "NHSCredentials.sol";
 
-contract Visit {
+contract Visit is Ownable {
     bool public riskState;
     Place public place;
     address public user;
@@ -20,16 +21,15 @@ contract Visit {
     }
    
     function recordPositiveTest(NHSCredentials nhsCredentials) external {
-        // something with isOwned by the user
+        require(user == msg.sender, "Visit: caller is not the original user");
+
         if (nhsCredentials.verify(user)) {
             riskState = true;
             place.notifyRisk(this);
         }
     }
    
-    function notifyRisk() external {
-        // msg.sender should == place
-        // something with isOwned by the place
+    function notifyRisk() external onlyOwner {
         riskState = true;
     }
 }
