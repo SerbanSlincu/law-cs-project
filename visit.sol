@@ -1,35 +1,38 @@
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
-import "place.sol";
+import * as Interfaces from "interfaces.sol";
+// import "place.sol";
+import "ownable.sol";
 import "NHSCredentials.sol";
 
-contract Visit {
+contract Visit is Ownable, Interfaces.VisitIf {
     bool public riskState;
-    Place public place;
+    Interfaces.PlaceIf public place;
     address public user;
     uint private timestamp;
    
-    constructor(Place _place, address _user, uint _timestamp) {
+    constructor(Interfaces.PlaceIf _place, address _user, uint _timestamp) {
+        riskState = false;
         place = _place;
         user = _user;
         timestamp = _timestamp;
     }
 
-    function getTimestamp() external view returns(uint) {
+    function getTimestamp() external override view returns(uint) {
         return timestamp;
     }
    
-    function recordPositiveTest(NHSCredentials nhsCredentials) external {
-        // something with isOwned by the user
+    function recordPositiveTest(Interfaces.NHSCredentialsIf nhsCredentials) external override {
+        require(user == msg.sender, "Visit: caller is not the original user");
+
         if (nhsCredentials.verify(user)) {
             riskState = true;
             place.notifyRisk(this);
         }
     }
    
-    function notifyRisk() external {
-        // msg.sender should == place
-        // something with isOwned by the place
+    function notifyRisk() external override onlyOwner {
         riskState = true;
     }
 }
