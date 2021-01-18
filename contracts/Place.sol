@@ -8,8 +8,8 @@ instance.visitFrom(accounts[0],1000)
 
 pragma solidity ^0.8.0;
 
-import "visit.sol";
-import "ownable.sol";
+import "Visit.sol";
+import "Ownable.sol";
 import "DateTime.sol";
 
 contract Place is Ownable, Interfaces.PlaceIf {
@@ -47,9 +47,5 @@ contract Place is Ownable, Interfaces.PlaceIf {
             }
         }
         visits = updatedVisits;
-    }
-
-    function giveString() external returns(string memory) {
-      return 'This is a test string';
     }
 }
