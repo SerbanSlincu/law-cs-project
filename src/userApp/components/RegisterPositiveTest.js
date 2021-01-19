@@ -1,0 +1,1 @@
+/* The positive test registering */

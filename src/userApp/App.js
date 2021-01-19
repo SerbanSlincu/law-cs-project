@@ -1,23 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Button } from 'react-native-elements';
 import { placeAbi} from './abi';
 import 'react-native-get-random-values';
-
-//const Web3 = require('web3');
-//const web3 = new Web3('http://localhost:8545');
+import { styles } from './appStyles.js';
+import { View } from 'react-native';
 
 import { ethers } from 'ethers';
 
+import CheckIn from './components/CheckIn.js';
 
 export default function App() {
-
-    /* Web3 test - not working 
-    const testPlace = () => {
-    
-        var contractAddress = '0xC7C01DC9bA41593CE50679D4B58aD14F258B72e5'
-        var contract = new web3.eth.Contract(placeAbi, contractAddress);
-        console.log(contract)
-    } */
 
     /* (Working) Usage of accessing a deployed contract */
     const testPlace = () => {
@@ -27,18 +19,22 @@ export default function App() {
         var contract = new ethers.Contract(contractAddress, placeAbi, provider);
         console.log(contract)
    }
-   
-    /* (Working) Usage of creating a new wallet */
-    const createWallet = () => {
-        var wallet = new ethers.Wallet.createRandom();
-        console.log(wallet)
-   }
 
-  return (
-        <Button
-            onPress={createWallet}
-            title="Create new account"
-        />
+   /* Check if any of the visits have the alert flag on.
+      If any of them do, send a notification.
+   */
+   const checkVisits = () => {}
+
+   /* Remove visit if more than 14 days have passed.
+      Used during the checkVisit method.
+   */
+   const removeVisit = () => {}
+  
+   return (
+        <View style={styles.dashboard}>
+            <CheckIn/>
+        </View>
   );
 }
+
 
