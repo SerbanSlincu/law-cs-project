@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
-interface NHSCredentials {
-    function verify(address) external returns(bool);
+import * as Interfaces from "interfaces.sol";
+
+contract NHSCredentials is Interfaces.NHSCredentialsIf {
+    function verify(address) external override returns(bool) {
+      return true;
+    }
 }
