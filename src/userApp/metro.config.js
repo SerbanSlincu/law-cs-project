@@ -1,5 +1,4 @@
-const nodelibs = require('node-libs-react-native')
-nodelibs.crypto = null;
+const nodelibs = require('node-libs-browser')
 
 module.exports = {
     resolver: {
