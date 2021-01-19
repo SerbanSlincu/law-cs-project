@@ -3,7 +3,13 @@
 migrate
 let accounts = await web3.eth.getAccounts()
 let instance = await Place.deployed()
-instance.visitFrom(accounts[0],1000)
+let dummyCreds = await NHSCredentials.deployed()
+let visit = await instance.visitFrom(accounts[0],1000)
+let v1 = await Visit.at(visit.logs[0].args['1'])
+let otherVisit = await instance.visitFrom(accounts[0],1000)
+let v2 = await Visit.at(otherVisit.logs[0].args['1'])
+v2.riskState.call()
+v1.recordPositiveTest(dummyCreds.address)
 */
 
 pragma solidity ^0.8.0;
@@ -32,10 +38,13 @@ contract Place is Ownable, Interfaces.PlaceIf {
             }
         }
     }
+
+    event visitFromEvent(address user, Interfaces.VisitIf newVisit);
     
     function visitFrom(address user, uint timestamp) external onlyOwner override returns(Interfaces.VisitIf) {
         Visit newVisit = new Visit(this, user, timestamp);
         visits.push(newVisit);
+        emit visitFromEvent(user, newVisit);
         return newVisit;
     }
     
@@ -47,9 +56,5 @@ contract Place is Ownable, Interfaces.PlaceIf {
             }
         }
         visits = updatedVisits;
-    }
-
-    function giveString() external returns(string memory) {
-      return 'This is a test string';
     }
 }
