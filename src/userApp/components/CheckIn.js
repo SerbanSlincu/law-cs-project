@@ -1,9 +1,8 @@
 /* The check-in section of the app */
 import React, { useState } from 'react';
 import { Button, Overlay } from 'react-native-elements';
-import { placeAbi} from '../abi';
 import 'react-native-get-random-values';
-import { styles } from '../appStyles.js';
+import { buttons } from '../appStyles.js';
 import { View, Text } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 
@@ -37,7 +36,7 @@ export default function CheckIn() {
    
    if(isOverlayVisible == false){
         return (
-            <Button
+            <Button style={buttons.main}
                 onPress={createWallet}
                 title="Check in"
             />
@@ -45,21 +44,23 @@ export default function CheckIn() {
    }
    if(isOverlayVisible == true){
         return(
-            <View>
-                <Text>
-                   Show this QR code to complete the check in
-                </Text>
-                <QRCode 
-                    value={walletAddress}
-                    size={200}
-                    bgColor='black'
-                    fgColor='white'
-                />
-                <Button
-                    onPress={toggleOverlay}
-                    title="Done"
-                />
-            </View>
+            <Overlay isVisible={isOverlayVisible}>
+                <View>
+                    <Text>
+                        Show this QR code to complete the check in
+                    </Text>
+                    <QRCode 
+                        value={walletAddress}
+                        size={200}
+                        bgColor='black'
+                        fgColor='white'
+                    />
+                    <Button
+                        onPress={toggleOverlay}
+                        title="Done"
+                    />
+                </View>
+            </Overlay>
         );
    }
 

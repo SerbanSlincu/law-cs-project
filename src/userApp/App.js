@@ -8,6 +8,8 @@ import { View } from 'react-native';
 import { ethers } from 'ethers';
 
 import CheckIn from './components/CheckIn.js';
+import RegisterPositiveTest from './components/RegisterPositiveTest.js';
+import RegisterVaccine from './components/RegisterVaccine.js';
 
 export default function App() {
 
@@ -33,6 +35,8 @@ export default function App() {
    return (
         <View style={styles.dashboard}>
             <CheckIn/>
+            <RegisterPositiveTest/>
+            <RegisterVaccine/>
         </View>
   );
 }
