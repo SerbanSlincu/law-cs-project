@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import "DateTime.sol";
 
 interface NHSCredentialsIf {
-    function verify(address) external view returns(bool);
+    function verify(address) external returns(bool);
 }
 
 interface VisitIf {
