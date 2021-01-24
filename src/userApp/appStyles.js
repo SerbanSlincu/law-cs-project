@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
   dashboard: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -29,12 +29,13 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 40,
     textShadowRadius: 5,
-    color: '#000080',
+    color: '#add8e6',
   },
   alertLevel: {
     marginBottom: 60,
-    fontWeight: '200',
+    fontWeight: '700',
     fontSize: 20,
+    color: '#fff',
   }
 
 })
