@@ -49,4 +49,35 @@ const alert = StyleSheet.create({
   }
 })
 
-export { styles, alert };
+const opacity = 'rgba(0, 0, 0, .6)';
+const scanner = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  layerTop: {
+    flex: 1,
+    backgroundColor: opacity
+  },
+  layerCenter: {
+    flex: 1,
+    flexDirection: 'row'
+  },
+  layerLeft: {
+    flex: 1,
+    backgroundColor: opacity
+  },
+  focused: {
+    flex: 10
+  },
+  layerRight: {
+    flex: 1,
+    backgroundColor: opacity
+  },
+  layerBottom: {
+    flex: 1,
+    backgroundColor: opacity
+  },
+});
+
+export { styles, alert, scanner };

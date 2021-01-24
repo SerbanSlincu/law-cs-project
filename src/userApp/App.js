@@ -42,9 +42,9 @@ export default function App() {
                 <Text style={alertLevel ? alert.red : alert.green}> {String(alertLevel)}
                 </Text>
             </Text>
-            <CheckIn/>
             <RegisterPositiveTest/>
             <RegisterVaccine/>
+            <CheckIn/>
         </View>
   );
 }

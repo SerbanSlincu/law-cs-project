@@ -13,11 +13,12 @@ export default function CheckIn() {
     const [hasPermission, setHasPermission] = useState(null);
     // const [scanned, setScanned] = useState(false);
     const [accountAddress, setAccountAddress] = useState(null);
-
+    
+    /*
     async function getPermission() {
         const { status } = await BarCodeScanner.requestPermissionsAsync();
         setHasPermission(status === 'granted');
-    }
+    } */
 
     const handleBarCodeScanned = ({ type, data }) => {
         // setScanned(true);
