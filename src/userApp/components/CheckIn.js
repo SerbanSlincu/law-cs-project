@@ -5,6 +5,7 @@ import 'react-native-get-random-values';
 import { buttons } from '../appStyles.js';
 import { View, Text } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
+import { styles } from '../appStyles.js';
 
 import { ethers } from 'ethers';
 
@@ -26,7 +27,7 @@ export default function CheckIn() {
 
         var wallet = new ethers.Wallet.createRandom();
         setWalletAddress(wallet.address);
-        console.log(wallet.address);
+        // console.log(wallet.address);
         setOverlayVisible(true);
    }
 
@@ -36,17 +37,19 @@ export default function CheckIn() {
    
    if(isOverlayVisible == false){
         return (
-            <Button style={buttons.main}
-                onPress={createWallet}
-                title="Check in"
-            />
+            <View style={styles.button}>
+                <Button
+                    onPress={createWallet}
+                    title="Check in"
+                />
+             </View>
         );
    }
    if(isOverlayVisible == true){
         return(
             <Overlay isVisible={isOverlayVisible}>
-                <View>
-                    <Text>
+                <View style={styles.overlay}>
+                    <Text style={styles.text}>
                         Show this QR code to complete the check in
                     </Text>
                     <QRCode 
@@ -55,10 +58,12 @@ export default function CheckIn() {
                         bgColor='black'
                         fgColor='white'
                     />
-                    <Button
-                        onPress={toggleOverlay}
-                        title="Done"
-                    />
+                    <View style={styles.button}>
+                        <Button
+                            onPress={toggleOverlay}
+                            title="Done"
+                        />
+                    </View>
                 </View>
             </Overlay>
         );
