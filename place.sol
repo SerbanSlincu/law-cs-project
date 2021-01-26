@@ -22,7 +22,9 @@ contract Place is Ownable, Interfaces.PlaceIf {
     Visit[] private visits;
     DateTime dateTime;
     
-    constructor() {} 
+    constructor() {
+        dateTime = new DateTime();
+    } 
     
     function notifyRisk(Interfaces.VisitIf infectedVisit) external override {
         bool trackedVisit = false;
