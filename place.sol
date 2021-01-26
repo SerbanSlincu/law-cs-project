@@ -21,12 +21,17 @@ import "DateTime.sol";
 contract Place is Ownable, Interfaces.PlaceIf {
     Visit[] private visits;
     DateTime dateTime;
+    address recognisedAuthority;
     
-    constructor() {
+    constructor(address _recognisedAuthority) {
         dateTime = new DateTime();
+        recognisedAuthority = _recognisedAuthority;
     } 
     
+    /*Called by health authority*/
     function notifyRisk(Interfaces.VisitIf infectedVisit) external override {
+        require(msg.sender == recognisedAuthority, "Place: caller is not a recognised authority");
+
         bool trackedVisit = false;
         for (uint i = 0; i < visits.length; i ++) {
             trackedVisit = trackedVisit || (visits[i] == infectedVisit);
