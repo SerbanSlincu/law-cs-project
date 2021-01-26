@@ -21,15 +21,6 @@ contract Visit is Ownable, Interfaces.VisitIf {
         return timestamp;
     }
    
-    function recordPositiveTest(Interfaces.NHSCredentialsIf nhsCredentials) external override {
-        require(user == msg.sender, "Visit: caller is not the original user");
-        
-        if (nhsCredentials.verify(user)) {
-            riskState = true;
-            place.notifyRisk(this);
-        }
-    }
-   
     function notifyRisk() external override onlyOwner {
         riskState = true;
     }
