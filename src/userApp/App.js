@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import { Button } from 'react-native-elements';
-import { placeAbi} from './abi';
+import { Button, Overlay } from 'react-native-elements';
+import { placeAbi, visitAbi } from './abi';
 import 'react-native-get-random-values';
 import { styles, alert } from './appStyles.js';
 import { View, Text } from 'react-native';
@@ -12,9 +12,9 @@ import RegisterPositiveTest from './components/RegisterPositiveTest.js';
 import RegisterVaccine from './components/RegisterVaccine.js';
 
 export default function App() {
-
     //hooks
     const [alertLevel, setAlertLevel] = useState(false)
+    var visits = [];
 
     /* (Working) Usage of accessing a deployed contract */
     const testPlace = () => {
@@ -25,17 +25,38 @@ export default function App() {
         console.log(contract)
    }
 
-   /* Check if any of the visits have the alert flag on.
-      If any of them do, send a notification.
-   */
-   const checkVisits = () => {}
+    /* Check if any of the visits have the alert flag on.
+       If any of them do, send a notification. */
+    const checkVisits = () => {
+        let provider = ethers.getDefaultProvider('ropsten');
+        for(var i = 0; i < visits.length; i ++) {
+            var visitContract = new ethers.Contract(visits[i], visitAbi, provider);
+            if (visitContract.riskState) {
+                setAlertLevel(true);
+            }
+        }
+    }
 
-   /* Remove visit if more than 14 days have passed.
-      Used during the checkVisit method.
-   */
-   const removeVisit = () => {}
+    /* Remove visit if more than 14 days have passed.
+       Used during the checkVisit method. */
+    const removeVisit = () => {
+        console.log(visits[0]);
+        var newVisits = [];
+        const currTimestamp = Date.now();
+
+        let provider = ethers.getDefaultProvider('ropsten');
+        for(var i = 0; i < visits.length; i ++) {
+            var visitContract = new ethers.Contract(visits[i], visitAbi, provider);
+            if (Math.abs(visitContract.getTimestamp - currTimestamp) < 14 * 24 * 60 * 60) {
+                newVisits.push(visits[i]);
+            }
+        }
+        visits = newVisits;
+    }
+
+    setInterval(() => { checkVisits(); removeVisit(); }, 5000);
   
-   return (
+    return (
         <View style={styles.dashboard}>
             <Text style={styles.title}> Track and Trace </Text>
             <Text style={styles.alertLevel}> Your alert status is 
@@ -44,9 +65,7 @@ export default function App() {
             </Text>
             <RegisterPositiveTest/>
             <RegisterVaccine/>
-            <CheckIn/>
+            <CheckIn visits={visits}/>
         </View>
   );
 }
-
-

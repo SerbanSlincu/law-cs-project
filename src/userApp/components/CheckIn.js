@@ -10,8 +10,8 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 
 import { ethers } from 'ethers';
 
-export default function CheckIn() {
-
+// or props.visits
+export default function CheckIn(visits) {
     //hooks
     const [isScannerVisible, setScannerVisible] = useState(false);
     const [isQRVisible, setQRVisible] = useState(false);
@@ -31,6 +31,7 @@ export default function CheckIn() {
         toggleScanner();
         // to implement something that doesn't allow the user to check in themselves
         // if(walletAddress == data)
+        visits.push(data);
         setIsConfirmed(true);
     };
        
