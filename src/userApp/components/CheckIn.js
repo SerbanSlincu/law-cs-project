@@ -21,7 +21,6 @@ export default function CheckIn() {
 
     /* Create a new wallet to use during check-in. */
     const createWallet = () => {
-
         var wallet = new ethers.Wallet.createRandom();
         setWalletAddress(wallet.address);
         // console.log(wallet.address);
