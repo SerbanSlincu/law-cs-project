@@ -3,7 +3,13 @@
 migrate
 let accounts = await web3.eth.getAccounts()
 let instance = await Place.deployed()
-instance.visitFrom(accounts[0],1000)
+let dummyCreds = await NHSCredentials.deployed()
+let visit = await instance.visitFrom(accounts[0],1000)
+let v1 = await Visit.at(visit.logs[0].args['1'])
+let otherVisit = await instance.visitFrom(accounts[0],1000)
+let v2 = await Visit.at(otherVisit.logs[0].args['1'])
+v2.riskState.call()
+v1.recordPositiveTest(dummyCreds.address)
 */
 
 pragma solidity ^0.8.0;
@@ -15,10 +21,17 @@ import "DateTime.sol";
 contract Place is Ownable, Interfaces.PlaceIf {
     Visit[] private visits;
     DateTime dateTime;
+    address recognisedAuthority;
     
-    constructor() {} 
+    constructor(address _recognisedAuthority) {
+        dateTime = new DateTime();
+        recognisedAuthority = _recognisedAuthority;
+    } 
     
+    /*Called by health authority*/
     function notifyRisk(Interfaces.VisitIf infectedVisit) external override {
+        require(msg.sender == recognisedAuthority, "Place: caller is not a recognised authority");
+
         bool trackedVisit = false;
         for (uint i = 0; i < visits.length; i ++) {
             trackedVisit = trackedVisit || (visits[i] == infectedVisit);
@@ -32,10 +45,13 @@ contract Place is Ownable, Interfaces.PlaceIf {
             }
         }
     }
+
+    event visitFromEvent(address user, Interfaces.VisitIf newVisit);
     
     function visitFrom(address user, uint timestamp) external onlyOwner override returns(Interfaces.VisitIf) {
         Visit newVisit = new Visit(this, user, timestamp);
         visits.push(newVisit);
+        emit visitFromEvent(user, newVisit);
         return newVisit;
     }
     
