@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import { Button } from 'react-native-elements';
 import { placeAbi} from './abi';
 import 'react-native-get-random-values';
-import { styles } from './appStyles.js';
-import { View } from 'react-native';
+import { styles, alert } from './appStyles.js';
+import { View, Text } from 'react-native';
 
 import { ethers } from 'ethers';
 
@@ -12,6 +12,9 @@ import RegisterPositiveTest from './components/RegisterPositiveTest.js';
 import RegisterVaccine from './components/RegisterVaccine.js';
 
 export default function App() {
+
+    //hooks
+    const [alertLevel, setAlertLevel] = useState(false)
 
     /* (Working) Usage of accessing a deployed contract */
     const testPlace = () => {
@@ -34,9 +37,14 @@ export default function App() {
   
    return (
         <View style={styles.dashboard}>
-            <CheckIn/>
+            <Text style={styles.title}> Track and Trace </Text>
+            <Text style={styles.alertLevel}> Your alert status is 
+                <Text style={alertLevel ? alert.red : alert.green}> {String(alertLevel)}
+                </Text>
+            </Text>
             <RegisterPositiveTest/>
             <RegisterVaccine/>
+            <CheckIn/>
         </View>
   );
 }
