@@ -6,8 +6,8 @@ import QRCode from 'react-native-qrcode-svg';
 import { scanner, styles } from '../appStyles.js';
 import 'react-native-get-random-values';
 import { ethers } from 'ethers';
-const visitCompilerOutput = require('./Visit.json');
-const placeCompilerOutput = require('./Place.json');
+const visitCompilerOutput = require('../Visit.json');
+const placeCompilerOutput = require('../Place.json');
 
 export default function CheckIn() {
 
@@ -15,8 +15,8 @@ export default function CheckIn() {
     const [isScannerVisible, setScannerVisible] = useState(false);
     const [isQRVisible, setQRVisible] = useState(false);
     const [hasPermission, setHasPermission] = useState(null);
-    const [accountAddress, setAccountAddress] = useState(null);
     const [placeContract, setPlaceContract] = useState(null);
+    const [latestVisit, setLatestVisit] = useState(null);
     const [placeName, setPlaceName] = useState(''); //set upon init
 
     /* Create an account for the place upon start of app.
@@ -46,7 +46,7 @@ export default function CheckIn() {
     }
 
     /* Create a new visit contract with the current account address */
-    async function createVisitContract() {
+    async function createVisitContract(user) {
         // the network on which truffle is deployed
         // pick an account from the ones given by truffle
         let provider = ethers.getDefaultProvider('http://127.0.0.1:9545/');
@@ -54,7 +54,7 @@ export default function CheckIn() {
         wallet = wallet.connect(provider);
 
         var factory = ethers.ContractFactory.fromSolidity((visitCompilerOutput:compilerOutput), wallet)
-        var contract = await factory.deploy(wallet.address)
+        var contract = await factory.deploy(wallet.address, user, Date.now())
         console.log(contract)
     }
 
@@ -63,11 +63,17 @@ export default function CheckIn() {
        Creates a new visit contract and returns the address of the deployed contract. */
     const handleBarCodeScanned = ({ type, data }) => {
 
-        setAccountAddress(data);
         toggleScanner();
-        toggleQR();
-        createVisitContract()
 
+        console.log("Getting a visit from the following user:");
+        console.log(data);
+        var visit = createVisitContract(data)
+        console.log("Returning the following visit:");
+        console.log(visit);
+        setLatestVisit(visit);
+        // should also add to list of visits?
+
+        toggleQR();
     };
     
        
@@ -118,7 +124,7 @@ export default function CheckIn() {
                         Show this QR to your guest for confirmation
                     </Text>
                     <QRCode 
-                        value={accountAddress}
+                        value={latestVisit}
                         size={200}
                         bgColor='black'
                         fgColor='white'
