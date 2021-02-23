@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
-import * as Interfaces from "interfaces.sol";
-import "ownable.sol";
+import * as Interfaces from "../contracts/Interfaces.sol";
+import "../contracts/Ownable.sol";
 
 contract Visit is Ownable, Interfaces.VisitIf {
     bool public riskState;

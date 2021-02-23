@@ -14,18 +14,26 @@ v1.recordPositiveTest(dummyCreds.address)
 
 pragma solidity ^0.8.0;
 
-import "Visit.sol";
-import "Ownable.sol";
-import "DateTime.sol";
+import "../contracts/Visit.sol";
+import "../contracts/Ownable.sol";
 
 contract Place is Ownable, Interfaces.PlaceIf {
     Visit[] private visits;
-    DateTime dateTime;
     address recognisedAuthority;
     
     constructor(address _recognisedAuthority) {
-        dateTime = new DateTime();
         recognisedAuthority = _recognisedAuthority;
+    } 
+
+    /* Internally used only for notifyRisk calls */
+    function closeTo(uint timestamp, uint otherTimestamp) internal pure returns (bool) {
+        if (timestamp < otherTimestamp && (otherTimestamp - timestamp < 86400 * 14)) {
+            return true;
+        }
+        if (otherTimestamp <= timestamp && (timestamp - otherTimestamp < 86400 * 14)) {
+            return true;
+        }
+        return false;
     } 
     
     /*Called by health authority*/
@@ -40,7 +48,7 @@ contract Place is Ownable, Interfaces.PlaceIf {
 
         for (uint i = 0; i < visits.length; i ++) {
             Visit currVisit = visits[i];
-            if (dateTime.closeTo(currVisit.getTimestamp(), infectedVisit.getTimestamp())) {
+            if (closeTo(currVisit.getTimestamp(), infectedVisit.getTimestamp())) {
                 currVisit.notifyRisk();
             }
         }
@@ -56,10 +64,15 @@ contract Place is Ownable, Interfaces.PlaceIf {
     }
     
     function clean() external override onlyOwner {
-        Visit[] storage updatedVisits;
+        Visit[] memory updatedVisits;
         for (uint i = 0; i < visits.length; i ++) {
-            if (dateTime.closeTo(visits[i].getTimestamp(), block.timestamp)) {
-                updatedVisits.push(visits[i]);
+            if (closeTo(visits[i].getTimestamp(), block.timestamp)) {
+                Visit[] memory updatedVisits2 = new Visit[](updatedVisits.length+1);
+                for (uint j = 0; j < updatedVisits.length; j ++) {
+                    updatedVisits2[j] = updatedVisits[j];
+                }
+                updatedVisits2[updatedVisits.length] = visits[i];
+                updatedVisits = updatedVisits2;
             }
         }
         visits = updatedVisits;

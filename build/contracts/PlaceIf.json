@@ -46,7 +46,7 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.8.0+commit.c7dfd78e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"clean\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract VisitIf\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"notifyRisk\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"visitFrom\",\"outputs\":[{\"internalType\":\"contract VisitIf\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/alex/Desktop/OxfordMaterials/Law & CS/Track and Trace app/law-cs-project/contracts/Interfaces.sol\":\"PlaceIf\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/alex/Desktop/OxfordMaterials/Law & CS/Track and Trace app/law-cs-project/contracts/Interfaces.sol\":{\"keccak256\":\"0x981a60db2d718c09a9394ce1c153ec36dec90c43716d279907e6358b67b0791a\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://f9ea119143cb7ccc5680899fb3dab1e409360bf136ebb1685e5e35158ec75e83\",\"dweb:/ipfs/QmfCj48jkpToHQG3XavihQV5FQyfadGYSkWUxDF4aDB8KX\"]},\"DateTime.sol\":{\"keccak256\":\"0x2023a119c9181c461d803511c18b1959a97c6d6461e8f3677d34ff2a36b9c372\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://0747ceda9b72a2c86ec3cd883cc567c2fa414688b000d754e73ad7953410cb8d\",\"dweb:/ipfs/QmQfGbUA52rStoFsD29bp4gECijrzoJys44gUmW94kXuJB\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.1+commit.df193b15\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"clean\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract VisitIf\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"notifyRisk\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"visitFrom\",\"outputs\":[{\"internalType\":\"contract VisitIf\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/serban/Desktop/law-cs-project/contracts/Interfaces.sol\":\"PlaceIf\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/serban/Desktop/law-cs-project/contracts/Interfaces.sol\":{\"keccak256\":\"0x4862ebe603f099fe6f1662bf1954a154a03b9c02c0f5aaca9cb2e50e96bdd334\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://88789b8b013745374ba82689461a3459f2c78e434e84fd10c8538e7dc3905b7f\",\"dweb:/ipfs/QmdUucJnw5r8V6qHp21yWsGa4t4bqYUXfqRKYW68BgLpKZ\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
@@ -54,25 +54,19 @@
   "deployedGeneratedSources": [],
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "// SPDX-License-Identifier: UNLICENSED\r\npragma solidity ^0.8.0;\r\n\r\nimport \"DateTime.sol\";\r\n\r\ninterface NHSCredentialsIf {\r\n    function verify(address) external view returns(bool);\r\n}\r\n\r\ninterface VisitIf {\r\n    // bool riskState;\r\n    \r\n    /* will call Place.visit\r\n    constructor (PlaceIf, address, uint); */\r\n\r\n    function getTimestamp() external returns(uint);\r\n    \r\n    /* called by the User App */\r\n    function recordPositiveTest(NHSCredentialsIf) external;\r\n    \r\n    /* called only by the corresponding Place */\r\n    function notifyRisk() external;\r\n}\r\n\r\ninterface PlaceIf {\r\n    /* take the name\r\n    constructor(string); */\r\n    \r\n    /* called by one \"positive\" Visit */\r\n    function notifyRisk(VisitIf) external;\r\n   \r\n    function visitFrom(address, uint) external returns(VisitIf);\r\n\r\n    function clean() external;\r\n}\r\n",
-  "sourcePath": "/home/alex/Desktop/OxfordMaterials/Law & CS/Track and Trace app/law-cs-project/contracts/Interfaces.sol",
+  "source": "// SPDX-License-Identifier: UNLICENSED\r\npragma solidity ^0.8.0;\r\n\r\ninterface VisitIf {\r\n    // bool riskState;\r\n    \r\n    /* will call Place.visit\r\n    constructor (PlaceIf, address, uint); */\r\n\r\n    function getTimestamp() external returns(uint);\r\n    \r\n    /* called only by the corresponding Place */\r\n    function notifyRisk() external;\r\n}\r\n\r\ninterface PlaceIf {\r\n    /* take the name\r\n    constructor(recognisedAutority address); */\r\n    \r\n    /* called by one \"positive\" Visit */\r\n    function notifyRisk(VisitIf) external;\r\n   \r\n    function visitFrom(address, uint) external returns(VisitIf);\r\n\r\n    function clean() external;\r\n}\r\n",
+  "sourcePath": "/home/serban/Desktop/law-cs-project/contracts/Interfaces.sol",
   "ast": {
-    "absolutePath": "/home/alex/Desktop/OxfordMaterials/Law & CS/Track and Trace app/law-cs-project/contracts/Interfaces.sol",
+    "absolutePath": "/home/serban/Desktop/law-cs-project/contracts/Interfaces.sol",
     "exportedSymbols": {
-      "DateTime": [
-        2041
-      ],
-      "NHSCredentialsIf": [
-        830
-      ],
       "PlaceIf": [
-        865
+        850
       ],
       "VisitIf": [
-        845
+        830
       ]
     },
-    "id": 866,
+    "id": 851,
     "license": "UNLICENSED",
     "nodeType": "SourceUnit",
     "nodes": [
@@ -88,17 +82,6 @@
         "src": "40:23:1"
       },
       {
-        "absolutePath": "DateTime.sol",
-        "file": "DateTime.sol",
-        "id": 822,
-        "nodeType": "ImportDirective",
-        "scope": 866,
-        "sourceUnit": 2042,
-        "src": "67:22:1",
-        "symbolAliases": [],
-        "unitAlias": ""
-      },
-      {
         "abstract": false,
         "baseContracts": [],
         "contractDependencies": [],
@@ -108,18 +91,24 @@
         "linearizedBaseContracts": [
           830
         ],
-        "name": "NHSCredentialsIf",
+        "name": "VisitIf",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "functionSelector": "63a9c3d7",
-            "id": 829,
+            "functionSelector": "188ec356",
+            "id": 826,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
-            "name": "verify",
+            "name": "getTimestamp",
             "nodeType": "FunctionDefinition",
             "parameters": {
+              "id": 822,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "221:2:1"
+            },
+            "returnParameters": {
               "id": 825,
               "nodeType": "ParameterList",
               "parameters": [
@@ -129,72 +118,64 @@
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 829,
-                  "src": "143:7:1",
+                  "scope": 826,
+                  "src": "241:4:1",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
                   },
                   "typeName": {
                     "id": 823,
-                    "name": "address",
+                    "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "143:7:1",
-                    "stateMutability": "nonpayable",
+                    "src": "241:4:1",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "142:9:1"
+              "src": "240:6:1"
+            },
+            "scope": 830,
+            "src": "200:47:1",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "3b59b823",
+            "id": 829,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "notifyRisk",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 827,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "328:2:1"
             },
             "returnParameters": {
               "id": 828,
               "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 827,
-                  "mutability": "mutable",
-                  "name": "",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 829,
-                  "src": "174:4:1",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_bool",
-                    "typeString": "bool"
-                  },
-                  "typeName": {
-                    "id": 826,
-                    "name": "bool",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "174:4:1",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_bool",
-                      "typeString": "bool"
-                    }
-                  },
-                  "visibility": "internal"
-                }
-              ],
-              "src": "173:6:1"
+              "parameters": [],
+              "src": "339:0:1"
             },
             "scope": 830,
-            "src": "127:53:1",
-            "stateMutability": "view",
+            "src": "309:31:1",
+            "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 866,
-        "src": "93:90:1"
+        "scope": 851,
+        "src": "67:276:1"
       },
       {
         "abstract": false,
@@ -202,28 +183,22 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 845,
+        "id": 850,
         "linearizedBaseContracts": [
-          845
+          850
         ],
-        "name": "VisitIf",
+        "name": "PlaceIf",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "functionSelector": "188ec356",
-            "id": 835,
+            "functionSelector": "a5ac84c4",
+            "id": 836,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
-            "name": "getTimestamp",
+            "name": "notifyRisk",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 831,
-              "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "341:2:1"
-            },
-            "returnParameters": {
               "id": 834,
               "nodeType": "ParameterList",
               "parameters": [
@@ -233,45 +208,58 @@
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 835,
-                  "src": "361:4:1",
+                  "scope": 836,
+                  "src": "511:7:1",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_uint256",
-                    "typeString": "uint256"
+                    "typeIdentifier": "t_contract$_VisitIf_$830",
+                    "typeString": "contract VisitIf"
                   },
                   "typeName": {
                     "id": 832,
-                    "name": "uint",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "361:4:1",
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 831,
+                      "name": "VisitIf",
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 830,
+                      "src": "511:7:1"
+                    },
+                    "referencedDeclaration": 830,
+                    "src": "511:7:1",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
+                      "typeIdentifier": "t_contract$_VisitIf_$830",
+                      "typeString": "contract VisitIf"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "360:6:1"
+              "src": "510:9:1"
             },
-            "scope": 845,
-            "src": "320:47:1",
+            "returnParameters": {
+              "id": 835,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "528:0:1"
+            },
+            "scope": 850,
+            "src": "491:38:1",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "functionSelector": "717e9352",
-            "id": 841,
+            "functionSelector": "4c6c8f05",
+            "id": 846,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
-            "name": "recordPositiveTest",
+            "name": "visitFrom",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 839,
+              "id": 841,
               "nodeType": "ParameterList",
               "parameters": [
                 {
@@ -280,171 +268,8 @@
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 841,
-                  "src": "441:16:1",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_NHSCredentialsIf_$830",
-                    "typeString": "contract NHSCredentialsIf"
-                  },
-                  "typeName": {
-                    "id": 837,
-                    "nodeType": "UserDefinedTypeName",
-                    "pathNode": {
-                      "id": 836,
-                      "name": "NHSCredentialsIf",
-                      "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 830,
-                      "src": "441:16:1"
-                    },
-                    "referencedDeclaration": 830,
-                    "src": "441:16:1",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_NHSCredentialsIf_$830",
-                      "typeString": "contract NHSCredentialsIf"
-                    }
-                  },
-                  "visibility": "internal"
-                }
-              ],
-              "src": "440:18:1"
-            },
-            "returnParameters": {
-              "id": 840,
-              "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "467:0:1"
-            },
-            "scope": 845,
-            "src": "413:55:1",
-            "stateMutability": "nonpayable",
-            "virtual": false,
-            "visibility": "external"
-          },
-          {
-            "functionSelector": "3b59b823",
-            "id": 844,
-            "implemented": false,
-            "kind": "function",
-            "modifiers": [],
-            "name": "notifyRisk",
-            "nodeType": "FunctionDefinition",
-            "parameters": {
-              "id": 842,
-              "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "549:2:1"
-            },
-            "returnParameters": {
-              "id": 843,
-              "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "560:0:1"
-            },
-            "scope": 845,
-            "src": "530:31:1",
-            "stateMutability": "nonpayable",
-            "virtual": false,
-            "visibility": "external"
-          }
-        ],
-        "scope": 866,
-        "src": "187:377:1"
-      },
-      {
-        "abstract": false,
-        "baseContracts": [],
-        "contractDependencies": [],
-        "contractKind": "interface",
-        "fullyImplemented": false,
-        "id": 865,
-        "linearizedBaseContracts": [
-          865
-        ],
-        "name": "PlaceIf",
-        "nodeType": "ContractDefinition",
-        "nodes": [
-          {
-            "functionSelector": "a5ac84c4",
-            "id": 851,
-            "implemented": false,
-            "kind": "function",
-            "modifiers": [],
-            "name": "notifyRisk",
-            "nodeType": "FunctionDefinition",
-            "parameters": {
-              "id": 849,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 848,
-                  "mutability": "mutable",
-                  "name": "",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 851,
-                  "src": "712:7:1",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_VisitIf_$845",
-                    "typeString": "contract VisitIf"
-                  },
-                  "typeName": {
-                    "id": 847,
-                    "nodeType": "UserDefinedTypeName",
-                    "pathNode": {
-                      "id": 846,
-                      "name": "VisitIf",
-                      "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 845,
-                      "src": "712:7:1"
-                    },
-                    "referencedDeclaration": 845,
-                    "src": "712:7:1",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_VisitIf_$845",
-                      "typeString": "contract VisitIf"
-                    }
-                  },
-                  "visibility": "internal"
-                }
-              ],
-              "src": "711:9:1"
-            },
-            "returnParameters": {
-              "id": 850,
-              "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "729:0:1"
-            },
-            "scope": 865,
-            "src": "692:38:1",
-            "stateMutability": "nonpayable",
-            "virtual": false,
-            "visibility": "external"
-          },
-          {
-            "functionSelector": "4c6c8f05",
-            "id": 861,
-            "implemented": false,
-            "kind": "function",
-            "modifiers": [],
-            "name": "visitFrom",
-            "nodeType": "FunctionDefinition",
-            "parameters": {
-              "id": 856,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 853,
-                  "mutability": "mutable",
-                  "name": "",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 861,
-                  "src": "760:7:1",
+                  "scope": 846,
+                  "src": "559:7:1",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -452,10 +277,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 852,
+                    "id": 837,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "760:7:1",
+                    "src": "559:7:1",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -466,12 +291,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 855,
+                  "id": 840,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 861,
-                  "src": "769:4:1",
+                  "scope": 846,
+                  "src": "568:4:1",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -479,10 +304,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 854,
+                    "id": 839,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "769:4:1",
+                    "src": "568:4:1",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -491,104 +316,98 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "759:15:1"
+              "src": "558:15:1"
             },
             "returnParameters": {
-              "id": 860,
+              "id": 845,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 859,
+                  "id": 844,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 861,
-                  "src": "792:7:1",
+                  "scope": 846,
+                  "src": "591:7:1",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_VisitIf_$845",
+                    "typeIdentifier": "t_contract$_VisitIf_$830",
                     "typeString": "contract VisitIf"
                   },
                   "typeName": {
-                    "id": 858,
+                    "id": 843,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 857,
+                      "id": 842,
                       "name": "VisitIf",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 845,
-                      "src": "792:7:1"
+                      "referencedDeclaration": 830,
+                      "src": "591:7:1"
                     },
-                    "referencedDeclaration": 845,
-                    "src": "792:7:1",
+                    "referencedDeclaration": 830,
+                    "src": "591:7:1",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_VisitIf_$845",
+                      "typeIdentifier": "t_contract$_VisitIf_$830",
                       "typeString": "contract VisitIf"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "791:9:1"
+              "src": "590:9:1"
             },
-            "scope": 865,
-            "src": "741:60:1",
+            "scope": 850,
+            "src": "540:60:1",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "fc4333cd",
-            "id": 864,
+            "id": 849,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "clean",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 862,
+              "id": 847,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "823:2:1"
+              "src": "622:2:1"
             },
             "returnParameters": {
-              "id": 863,
+              "id": 848,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "834:0:1"
+              "src": "633:0:1"
             },
-            "scope": 865,
-            "src": "809:26:1",
+            "scope": 850,
+            "src": "608:26:1",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 866,
-        "src": "568:270:1"
+        "scope": 851,
+        "src": "347:290:1"
       }
     ],
-    "src": "40:800:1"
+    "src": "40:599:1"
   },
   "legacyAST": {
-    "absolutePath": "/home/alex/Desktop/OxfordMaterials/Law & CS/Track and Trace app/law-cs-project/contracts/Interfaces.sol",
+    "absolutePath": "/home/serban/Desktop/law-cs-project/contracts/Interfaces.sol",
     "exportedSymbols": {
-      "DateTime": [
-        2041
-      ],
-      "NHSCredentialsIf": [
-        830
-      ],
       "PlaceIf": [
-        865
+        850
       ],
       "VisitIf": [
-        845
+        830
       ]
     },
-    "id": 866,
+    "id": 851,
     "license": "UNLICENSED",
     "nodeType": "SourceUnit",
     "nodes": [
@@ -604,17 +423,6 @@
         "src": "40:23:1"
       },
       {
-        "absolutePath": "DateTime.sol",
-        "file": "DateTime.sol",
-        "id": 822,
-        "nodeType": "ImportDirective",
-        "scope": 866,
-        "sourceUnit": 2042,
-        "src": "67:22:1",
-        "symbolAliases": [],
-        "unitAlias": ""
-      },
-      {
         "abstract": false,
         "baseContracts": [],
         "contractDependencies": [],
@@ -624,18 +432,24 @@
         "linearizedBaseContracts": [
           830
         ],
-        "name": "NHSCredentialsIf",
+        "name": "VisitIf",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "functionSelector": "63a9c3d7",
-            "id": 829,
+            "functionSelector": "188ec356",
+            "id": 826,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
-            "name": "verify",
+            "name": "getTimestamp",
             "nodeType": "FunctionDefinition",
             "parameters": {
+              "id": 822,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "221:2:1"
+            },
+            "returnParameters": {
               "id": 825,
               "nodeType": "ParameterList",
               "parameters": [
@@ -645,72 +459,64 @@
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 829,
-                  "src": "143:7:1",
+                  "scope": 826,
+                  "src": "241:4:1",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
                   },
                   "typeName": {
                     "id": 823,
-                    "name": "address",
+                    "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "143:7:1",
-                    "stateMutability": "nonpayable",
+                    "src": "241:4:1",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "142:9:1"
+              "src": "240:6:1"
+            },
+            "scope": 830,
+            "src": "200:47:1",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "3b59b823",
+            "id": 829,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "notifyRisk",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 827,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "328:2:1"
             },
             "returnParameters": {
               "id": 828,
               "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 827,
-                  "mutability": "mutable",
-                  "name": "",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 829,
-                  "src": "174:4:1",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_bool",
-                    "typeString": "bool"
-                  },
-                  "typeName": {
-                    "id": 826,
-                    "name": "bool",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "174:4:1",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_bool",
-                      "typeString": "bool"
-                    }
-                  },
-                  "visibility": "internal"
-                }
-              ],
-              "src": "173:6:1"
+              "parameters": [],
+              "src": "339:0:1"
             },
             "scope": 830,
-            "src": "127:53:1",
-            "stateMutability": "view",
+            "src": "309:31:1",
+            "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 866,
-        "src": "93:90:1"
+        "scope": 851,
+        "src": "67:276:1"
       },
       {
         "abstract": false,
@@ -718,28 +524,22 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 845,
+        "id": 850,
         "linearizedBaseContracts": [
-          845
+          850
         ],
-        "name": "VisitIf",
+        "name": "PlaceIf",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "functionSelector": "188ec356",
-            "id": 835,
+            "functionSelector": "a5ac84c4",
+            "id": 836,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
-            "name": "getTimestamp",
+            "name": "notifyRisk",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 831,
-              "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "341:2:1"
-            },
-            "returnParameters": {
               "id": 834,
               "nodeType": "ParameterList",
               "parameters": [
@@ -749,45 +549,58 @@
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 835,
-                  "src": "361:4:1",
+                  "scope": 836,
+                  "src": "511:7:1",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_uint256",
-                    "typeString": "uint256"
+                    "typeIdentifier": "t_contract$_VisitIf_$830",
+                    "typeString": "contract VisitIf"
                   },
                   "typeName": {
                     "id": 832,
-                    "name": "uint",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "361:4:1",
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 831,
+                      "name": "VisitIf",
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 830,
+                      "src": "511:7:1"
+                    },
+                    "referencedDeclaration": 830,
+                    "src": "511:7:1",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
+                      "typeIdentifier": "t_contract$_VisitIf_$830",
+                      "typeString": "contract VisitIf"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "360:6:1"
+              "src": "510:9:1"
             },
-            "scope": 845,
-            "src": "320:47:1",
+            "returnParameters": {
+              "id": 835,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "528:0:1"
+            },
+            "scope": 850,
+            "src": "491:38:1",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "functionSelector": "717e9352",
-            "id": 841,
+            "functionSelector": "4c6c8f05",
+            "id": 846,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
-            "name": "recordPositiveTest",
+            "name": "visitFrom",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 839,
+              "id": 841,
               "nodeType": "ParameterList",
               "parameters": [
                 {
@@ -796,171 +609,8 @@
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 841,
-                  "src": "441:16:1",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_NHSCredentialsIf_$830",
-                    "typeString": "contract NHSCredentialsIf"
-                  },
-                  "typeName": {
-                    "id": 837,
-                    "nodeType": "UserDefinedTypeName",
-                    "pathNode": {
-                      "id": 836,
-                      "name": "NHSCredentialsIf",
-                      "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 830,
-                      "src": "441:16:1"
-                    },
-                    "referencedDeclaration": 830,
-                    "src": "441:16:1",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_NHSCredentialsIf_$830",
-                      "typeString": "contract NHSCredentialsIf"
-                    }
-                  },
-                  "visibility": "internal"
-                }
-              ],
-              "src": "440:18:1"
-            },
-            "returnParameters": {
-              "id": 840,
-              "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "467:0:1"
-            },
-            "scope": 845,
-            "src": "413:55:1",
-            "stateMutability": "nonpayable",
-            "virtual": false,
-            "visibility": "external"
-          },
-          {
-            "functionSelector": "3b59b823",
-            "id": 844,
-            "implemented": false,
-            "kind": "function",
-            "modifiers": [],
-            "name": "notifyRisk",
-            "nodeType": "FunctionDefinition",
-            "parameters": {
-              "id": 842,
-              "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "549:2:1"
-            },
-            "returnParameters": {
-              "id": 843,
-              "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "560:0:1"
-            },
-            "scope": 845,
-            "src": "530:31:1",
-            "stateMutability": "nonpayable",
-            "virtual": false,
-            "visibility": "external"
-          }
-        ],
-        "scope": 866,
-        "src": "187:377:1"
-      },
-      {
-        "abstract": false,
-        "baseContracts": [],
-        "contractDependencies": [],
-        "contractKind": "interface",
-        "fullyImplemented": false,
-        "id": 865,
-        "linearizedBaseContracts": [
-          865
-        ],
-        "name": "PlaceIf",
-        "nodeType": "ContractDefinition",
-        "nodes": [
-          {
-            "functionSelector": "a5ac84c4",
-            "id": 851,
-            "implemented": false,
-            "kind": "function",
-            "modifiers": [],
-            "name": "notifyRisk",
-            "nodeType": "FunctionDefinition",
-            "parameters": {
-              "id": 849,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 848,
-                  "mutability": "mutable",
-                  "name": "",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 851,
-                  "src": "712:7:1",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_VisitIf_$845",
-                    "typeString": "contract VisitIf"
-                  },
-                  "typeName": {
-                    "id": 847,
-                    "nodeType": "UserDefinedTypeName",
-                    "pathNode": {
-                      "id": 846,
-                      "name": "VisitIf",
-                      "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 845,
-                      "src": "712:7:1"
-                    },
-                    "referencedDeclaration": 845,
-                    "src": "712:7:1",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_VisitIf_$845",
-                      "typeString": "contract VisitIf"
-                    }
-                  },
-                  "visibility": "internal"
-                }
-              ],
-              "src": "711:9:1"
-            },
-            "returnParameters": {
-              "id": 850,
-              "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "729:0:1"
-            },
-            "scope": 865,
-            "src": "692:38:1",
-            "stateMutability": "nonpayable",
-            "virtual": false,
-            "visibility": "external"
-          },
-          {
-            "functionSelector": "4c6c8f05",
-            "id": 861,
-            "implemented": false,
-            "kind": "function",
-            "modifiers": [],
-            "name": "visitFrom",
-            "nodeType": "FunctionDefinition",
-            "parameters": {
-              "id": 856,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 853,
-                  "mutability": "mutable",
-                  "name": "",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 861,
-                  "src": "760:7:1",
+                  "scope": 846,
+                  "src": "559:7:1",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -968,10 +618,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 852,
+                    "id": 837,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "760:7:1",
+                    "src": "559:7:1",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -982,12 +632,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 855,
+                  "id": 840,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 861,
-                  "src": "769:4:1",
+                  "scope": 846,
+                  "src": "568:4:1",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -995,10 +645,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 854,
+                    "id": 839,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "769:4:1",
+                    "src": "568:4:1",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1007,94 +657,94 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "759:15:1"
+              "src": "558:15:1"
             },
             "returnParameters": {
-              "id": 860,
+              "id": 845,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 859,
+                  "id": 844,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 861,
-                  "src": "792:7:1",
+                  "scope": 846,
+                  "src": "591:7:1",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_VisitIf_$845",
+                    "typeIdentifier": "t_contract$_VisitIf_$830",
                     "typeString": "contract VisitIf"
                   },
                   "typeName": {
-                    "id": 858,
+                    "id": 843,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 857,
+                      "id": 842,
                       "name": "VisitIf",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 845,
-                      "src": "792:7:1"
+                      "referencedDeclaration": 830,
+                      "src": "591:7:1"
                     },
-                    "referencedDeclaration": 845,
-                    "src": "792:7:1",
+                    "referencedDeclaration": 830,
+                    "src": "591:7:1",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_VisitIf_$845",
+                      "typeIdentifier": "t_contract$_VisitIf_$830",
                       "typeString": "contract VisitIf"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "791:9:1"
+              "src": "590:9:1"
             },
-            "scope": 865,
-            "src": "741:60:1",
+            "scope": 850,
+            "src": "540:60:1",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "fc4333cd",
-            "id": 864,
+            "id": 849,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "clean",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 862,
+              "id": 847,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "823:2:1"
+              "src": "622:2:1"
             },
             "returnParameters": {
-              "id": 863,
+              "id": 848,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "834:0:1"
+              "src": "633:0:1"
             },
-            "scope": 865,
-            "src": "809:26:1",
+            "scope": 850,
+            "src": "608:26:1",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 866,
-        "src": "568:270:1"
+        "scope": 851,
+        "src": "347:290:1"
       }
     ],
-    "src": "40:800:1"
+    "src": "40:599:1"
   },
   "compiler": {
     "name": "solc",
-    "version": "0.8.0+commit.c7dfd78e.Emscripten.clang"
+    "version": "0.8.1+commit.df193b15.Emscripten.clang"
   },
   "networks": {},
   "schemaVersion": "3.3.3",
-  "updatedAt": "2021-01-18T15:15:41.264Z",
+  "updatedAt": "2021-02-23T21:56:54.549Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

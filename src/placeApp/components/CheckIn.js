@@ -4,10 +4,10 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import { Button, Overlay } from 'react-native-elements';
 import QRCode from 'react-native-qrcode-svg';
 import { scanner, styles } from '../appStyles.js';
-import { placeAbi, visitAbi } from '../abi';
-import { visitBytecode, placeBytecode } from '../bytecodes';
 import 'react-native-get-random-values';
 import { ethers } from 'ethers';
+const visitCompilerOutput = require('./Visit.json');
+const placeCompilerOutput = require('./Place.json');
 
 export default function CheckIn() {
 
@@ -16,7 +16,7 @@ export default function CheckIn() {
     const [isQRVisible, setQRVisible] = useState(false);
     const [hasPermission, setHasPermission] = useState(null);
     const [accountAddress, setAccountAddress] = useState(null);
-    const [placeWallet, setPlaceWallet] = useState(null);
+    const [placeContract, setPlaceContract] = useState(null);
     const [placeName, setPlaceName] = useState(''); //set upon init
 
     /* Create an account for the place upon start of app.
@@ -26,31 +26,36 @@ export default function CheckIn() {
         // Set place name
         // if(placeName == '') setPlaceName('White Rabbit');
 
-        createPlaceContract();
+        if (placeContract == null) { createPlaceContract(); }
         
-    });
+    }, [placeContract]);
     
 
     /* Create a new place contract - to be used at init */
     async function createPlaceContract() {
+        // the network on which truffle is deployed
+        // pick an account from the ones given by truffle
+        let provider = ethers.getDefaultProvider('http://127.0.0.1:9545/');
+        var publicKey = '0x3a4fc847c66853317ca0170624f2b781ba15151d'
+        var privateKey = '723cc2a54b515307a5fdb9ca6838030a551ef2c15d5c58b95821377b7b9871b5'
+        var wallet = new ethers.Wallet(privateKey, provider)
 
-        let provider = ethers.getDefaultProvider('ropsten');
-        var wallet = ethers.Wallet.createRandom();
-        wallet = wallet.connect(provider);
-        var factory = new ethers.ContractFactory(placeAbi, placeBytecode, wallet)
-        var contract = await factory.deploy();
-        console.log(contract.address);
+        var factory = ethers.ContractFactory.fromSolidity((placeCompilerOutput:compilerOutput), wallet)
+        var contract = await factory.deploy(wallet.address)
+        setPlaceContract(contract)
     }
 
     /* Create a new visit contract with the current account address */
     async function createVisitContract() {
-
-        let provider = ethers.getDefaultProvider('ropsten');
+        // the network on which truffle is deployed
+        // pick an account from the ones given by truffle
+        let provider = ethers.getDefaultProvider('http://127.0.0.1:9545/');
         var wallet = ethers.Wallet.createRandom();
         wallet = wallet.connect(provider);
-        var factory = new ethers.ContractFactory(visitAbi, visitBytecode, wallet)
-        var contract = await factory.deploy(placeName, accountAddress, 1000);
-        console.log(contract);
+
+        var factory = ethers.ContractFactory.fromSolidity((visitCompilerOutput:compilerOutput), wallet)
+        var contract = await factory.deploy(wallet.address)
+        console.log(contract)
     }
 
 
@@ -61,6 +66,7 @@ export default function CheckIn() {
         setAccountAddress(data);
         toggleScanner();
         toggleQR();
+        createVisitContract()
 
     };
     
