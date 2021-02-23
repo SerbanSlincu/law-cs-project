@@ -34,17 +34,20 @@ export default function CheckIn() {
     /* Create a new place contract - to be used at init */
     async function createPlaceContract() {
 
+        let provider = ethers.getDefaultProvider('ropsten');
         var wallet = new ethers.Wallet.createRandom();
+        wallet = wallet.connect(provider);
         var factory = new ethers.ContractFactory(placeAbi, placeBytecode, wallet)
         var contract = await factory.deploy();
-        console.log(contract);
+        console.log(contract.address);
     }
 
     /* Create a new visit contract with the current account address */
     async function createVisitContract() {
 
-        let provider = ethers.getDefaultProvider();
+        let provider = ethers.getDefaultProvider('ropsten');
         var wallet = new ethers.Wallet.createRandom();
+        wallet = wallet.connect(provider);
         var factory = new ethers.ContractFactory(visitAbi, visitBytecode, wallet)
         var contract = await factory.deploy(placeName, accountAddress, 1000);
         console.log(contract);
