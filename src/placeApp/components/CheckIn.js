@@ -26,7 +26,6 @@ export default function CheckIn() {
         // Set place name
         // if(placeName == '') setPlaceName('White Rabbit');
 
-        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         createPlaceContract();
         
     });
@@ -36,7 +35,7 @@ export default function CheckIn() {
     async function createPlaceContract() {
 
         let provider = ethers.getDefaultProvider('ropsten');
-        var wallet = new ethers.Wallet.createRandom();
+        var wallet = ethers.Wallet.createRandom();
         wallet = wallet.connect(provider);
         var factory = new ethers.ContractFactory(placeAbi, placeBytecode, wallet)
         var contract = await factory.deploy();
@@ -47,7 +46,7 @@ export default function CheckIn() {
     async function createVisitContract() {
 
         let provider = ethers.getDefaultProvider('ropsten');
-        var wallet = new ethers.Wallet.createRandom();
+        var wallet = ethers.Wallet.createRandom();
         wallet = wallet.connect(provider);
         var factory = new ethers.ContractFactory(visitAbi, visitBytecode, wallet)
         var contract = await factory.deploy(placeName, accountAddress, 1000);
