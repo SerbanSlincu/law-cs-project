@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
   dashboard: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -24,8 +24,15 @@ const styles = StyleSheet.create({
   button: {
     width: 300,
     marginTop: 10,
-  }
-
+  },
+  title: {
+    marginVertical:20,
+    marginBottom: 60,
+    fontWeight: '700',
+    fontSize: 40,
+    textShadowRadius: 5,
+    color: '#add8e6',
+  },
 })
 
 const scanner = StyleSheet.create({

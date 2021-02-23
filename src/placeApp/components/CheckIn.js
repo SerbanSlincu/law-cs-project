@@ -4,6 +4,10 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import { Button, Overlay } from 'react-native-elements';
 import QRCode from 'react-native-qrcode-svg';
 import { scanner, styles } from '../appStyles.js';
+import { placeAbi, visitAbi } from '../abi';
+import { visitBytecode, placeBytecode } from '../bytecodes';
+import 'react-native-get-random-values';
+import { ethers } from 'ethers';
 
 export default function CheckIn() {
 
@@ -11,21 +15,52 @@ export default function CheckIn() {
     const [isScannerVisible, setScannerVisible] = useState(false);
     const [isQRVisible, setQRVisible] = useState(false);
     const [hasPermission, setHasPermission] = useState(null);
-    // const [scanned, setScanned] = useState(false);
     const [accountAddress, setAccountAddress] = useState(null);
-    
-    /*
-    async function getPermission() {
-        const { status } = await BarCodeScanner.requestPermissionsAsync();
-        setHasPermission(status === 'granted');
-    } */
+    const [placeWallet, setPlaceWallet] = useState(null);
+    const [placeName, setPlaceName] = useState(''); //set upon init
 
+    /* Create an account for the place upon start of app.
+       Used to sign contracts. */
+    useEffect(() => {
+        
+        // Set place name
+        // if(placeName == '') setPlaceName('White Rabbit');
+
+        createPlaceContract();
+        
+    });
+    
+
+    /* Create a new place contract - to be used at init */
+    async function createPlaceContract() {
+
+        var wallet = new ethers.Wallet.createRandom();
+        var factory = new ethers.ContractFactory(placeAbi, placeBytecode, wallet)
+        var contract = await factory.deploy();
+        console.log(contract);
+    }
+
+    /* Create a new visit contract with the current account address */
+    async function createVisitContract() {
+
+        let provider = ethers.getDefaultProvider();
+        var wallet = new ethers.Wallet.createRandom();
+        var factory = new ethers.ContractFactory(visitAbi, visitBytecode, wallet)
+        var contract = await factory.deploy(placeName, accountAddress, 1000);
+        console.log(contract);
+    }
+
+
+    /* Function to handle the data scanned from the barcode
+       Creates a new visit contract and returns the address of the deployed contract. */
     const handleBarCodeScanned = ({ type, data }) => {
-        // setScanned(true);
+
         setAccountAddress(data);
         toggleScanner();
         toggleQR();
+
     };
+    
        
     /* open check in scanner */
     const toggleScanner = () => {
