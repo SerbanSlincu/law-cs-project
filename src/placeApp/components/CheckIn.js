@@ -26,6 +26,7 @@ export default function CheckIn() {
         // Set place name
         // if(placeName == '') setPlaceName('White Rabbit');
 
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         createPlaceContract();
         
     });
