@@ -15,6 +15,7 @@ export default function CheckIn() {
     const [isScannerVisible, setScannerVisible] = useState(false);
     const [isQRVisible, setQRVisible] = useState(false);
     const [hasPermission, setHasPermission] = useState(null);
+    const [placeWallet, setPlaceWallet] = useState(null);
     const [placeContract, setPlaceContract] = useState(null);
     const [latestVisit, setLatestVisit] = useState(null);
     const [placeName, setPlaceName] = useState(''); //set upon init
@@ -22,12 +23,19 @@ export default function CheckIn() {
     /* Create an account for the place upon start of app.
        Used to sign contracts. */
     useEffect(() => {
-        
-        // Set place name
-        // if(placeName == '') setPlaceName('White Rabbit');
-
         if (placeContract == null) { createPlaceContract(); }
-        
+        /* 
+        else {
+            // for testing on the web interface, simulate a visit from a random account
+            // This needs to have enough funds, so run with truffle and select some
+            console.log(placeContract); 
+            var privateKey = '1fd037820cfa5d4324a739fe012f89fb55ae7ef4364549d7ec1bf38010775ae5';
+            let provider = ethers.getDefaultProvider('http://127.0.0.1:9545/');
+            var wallet = new ethers.Wallet(privateKey, provider);
+            var visit = createVisitContract(wallet.address);
+            console.log(visit)
+        }
+        */
     }, [placeContract]);
     
 
@@ -35,14 +43,15 @@ export default function CheckIn() {
     async function createPlaceContract() {
         // the network on which truffle is deployed
         // pick an account from the ones given by truffle
+        //var publicKey = '0x3a4fc847c66853317ca0170624f2b781ba15151d'
+        var privateKey = '723cc2a54b515307a5fdb9ca6838030a551ef2c15d5c58b95821377b7b9871b5';
         let provider = ethers.getDefaultProvider('http://127.0.0.1:9545/');
-        var publicKey = '0x3a4fc847c66853317ca0170624f2b781ba15151d'
-        var privateKey = '723cc2a54b515307a5fdb9ca6838030a551ef2c15d5c58b95821377b7b9871b5'
-        var wallet = new ethers.Wallet(privateKey, provider)
+        var wallet = new ethers.Wallet(privateKey, provider);
 
-        var factory = ethers.ContractFactory.fromSolidity((placeCompilerOutput:compilerOutput), wallet)
-        var contract = await factory.deploy(wallet.address)
-        setPlaceContract(contract)
+        var factory = ethers.ContractFactory.fromSolidity((placeCompilerOutput:compilerOutput), wallet);
+        var contract = await factory.deploy(wallet.address);
+        setPlaceWallet(wallet);
+        setPlaceContract(contract);
     }
 
     /* Create a new visit contract with the current account address */
@@ -50,12 +59,11 @@ export default function CheckIn() {
         // the network on which truffle is deployed
         // pick an account from the ones given by truffle
         let provider = ethers.getDefaultProvider('http://127.0.0.1:9545/');
-        var wallet = ethers.Wallet.createRandom();
-        wallet = wallet.connect(provider);
 
-        var factory = ethers.ContractFactory.fromSolidity((visitCompilerOutput:compilerOutput), wallet)
-        var contract = await factory.deploy(wallet.address, user, Date.now())
-        console.log(contract)
+        var factory = ethers.ContractFactory.fromSolidity((visitCompilerOutput:compilerOutput), placeWallet)
+        var contract = await factory.deploy(placeContract.address, user, Date.now())
+        var address = await contract.address
+        return address
     }
 
 
