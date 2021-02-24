@@ -11,7 +11,7 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import { ethers } from 'ethers';
 
 // or props.visits
-export default function CheckIn(visits) {
+export default function CheckIn({visits}) {
     //hooks
     const [isScannerVisible, setScannerVisible] = useState(false);
     const [isQRVisible, setQRVisible] = useState(false);
@@ -21,9 +21,10 @@ export default function CheckIn(visits) {
 
     /* Create a new wallet to use during check-in. */
     const createWallet = () => {
-        var wallet = new ethers.Wallet.createRandom();
+        var wallet = ethers.Wallet.createRandom();
         setWalletAddress(wallet.address);
-        // console.log(wallet.address);
+        console.log('Using the following address for a visit:');
+        console.log(wallet.address);
         setQRVisible(true);
    }
 
@@ -32,6 +33,7 @@ export default function CheckIn(visits) {
         // to implement something that doesn't allow the user to check in themselves
         // if(walletAddress == data)
         visits.push(data);
+        console.log(visits);
         setIsConfirmed(true);
     };
        

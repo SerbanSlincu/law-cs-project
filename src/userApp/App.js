@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import { Button, Overlay } from 'react-native-elements';
-import { placeAbi, visitAbi } from './abi';
 import 'react-native-get-random-values';
 import { styles, alert } from './appStyles.js';
 import { View, Text } from 'react-native';
@@ -10,6 +9,8 @@ import { ethers } from 'ethers';
 import CheckIn from './components/CheckIn.js';
 import RegisterPositiveTest from './components/RegisterPositiveTest.js';
 import RegisterVaccine from './components/RegisterVaccine.js';
+const visitCompilerOutput = require('./Visit.json');
+const placeCompilerOutput = require('./Place.json');
 
 export default function App() {
     //hooks
@@ -18,19 +19,19 @@ export default function App() {
 
     /* (Working) Usage of accessing a deployed contract */
     const testPlace = () => {
-        let provider = ethers.getDefaultProvider('ropsten');
+        let provider = ethers.getDefaultProvider('http://127.0.0.1:9545/');
         // Address of a deployed Place contract
         var contractAddress = '0x5646c8280a27a5cA4Fb320b06905B6fdc329b432'
-        var contract = new ethers.Contract(contractAddress, placeAbi, provider);
+        var contract = new ethers.Contract(contractAddress, placeCompilerOutput.abi, provider);
         console.log(contract)
    }
 
     /* Check if any of the visits have the alert flag on.
        If any of them do, send a notification. */
     const checkVisits = () => {
-        let provider = ethers.getDefaultProvider('ropsten');
+        let provider = ethers.getDefaultProvider('http://127.0.0.1:9545/');
         for(var i = 0; i < visits.length; i ++) {
-            var visitContract = new ethers.Contract(visits[i], visitAbi, provider);
+            var visitContract = new ethers.Contract(visits[i], visitCompilerOutput.abi, provider);
             if (visitContract.riskState) {
                 setAlertLevel(true);
             }
@@ -44,9 +45,9 @@ export default function App() {
         var newVisits = [];
         const currTimestamp = Date.now();
 
-        let provider = ethers.getDefaultProvider('ropsten');
+        let provider = ethers.getDefaultProvider('http://127.0.0.1:9545/');
         for(var i = 0; i < visits.length; i ++) {
-            var visitContract = new ethers.Contract(visits[i], visitAbi, provider);
+            var visitContract = new ethers.Contract(visits[i], visitCompilerOutput.abi, provider);
             if (Math.abs(visitContract.getTimestamp - currTimestamp) < 14 * 24 * 60 * 60) {
                 newVisits.push(visits[i]);
             }
@@ -54,7 +55,7 @@ export default function App() {
         visits = newVisits;
     }
 
-    setInterval(() => { checkVisits(); removeVisit(); }, 5000);
+    setInterval(() => { checkVisits(); removeVisit(); }, 10000);
   
     return (
         <View style={styles.dashboard}>
