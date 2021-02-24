@@ -1,6 +1,6 @@
 /* The positive test registering */
 import React, { useState } from 'react';
-import { Button } from 'react-native-elements';
+import { Button, Overlay } from 'react-native-elements';
 import { View, Text } from 'react-native';
 import { styles } from '../appStyles.js';
 
@@ -13,6 +13,8 @@ export default function RegisterPositiveTest(visits) {
     const NHSWallet = new ethers.Wallet(NHSPrivateKey, provider);
     const visitABI = [{"inputs":[{"internalType":"contract PlaceIf","name":"_place","type":"address"},{"internalType":"address","name":"_user","type":"address"},{"internalType":"uint256","name":"_timestamp","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"getTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"notifyRisk","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"place","outputs":[{"internalType":"contract PlaceIf","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"riskState","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"user","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}];
     const placeABI = [{"inputs":[],"name":"clean","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"contract VisitIf","name":"","type":"address"}],"name":"notifyRisk","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"visitFrom","outputs":[{"internalType":"contract VisitIf","name":"","type":"address"}],"stateMutability":"nonpayable","type":"function"}];
+
+    const [isOverlayVisible, setOverlayVisible] = useState(false);
 
     /*Registers the positive test for each visit*/
     const notifyVisits = async () => {
@@ -27,12 +29,36 @@ export default function RegisterPositiveTest(visits) {
       }
     }
 
-    return (
-        <View style={styles.button}>
-            <Button
-                onPress={async () => await notifyVisits()}
-                title="Register positive test"
-            />
-        </View>
-    );
+    const toggleOverlay = () => {
+        setOverlayVisible(!isOverlayVisible);
+    };
+
+    if(isOverlayVisible == false){
+           return (
+               <View style={styles.button}>
+                    <Button
+                        onPress={toggleOverlay}
+                        title="Register positive test"
+                    />
+                </View>
+            );
+    }
+
+    if (isOverlayVisible == true){
+            return(
+                <Overlay isVisible={isOverlayVisible}>
+                    <View style={styles.overlay}>
+                        <Text style={styles.messages}>
+                            NHS has confirmed your result!
+                        </Text>
+                        <View style={styles.button}>
+                            <Button
+                                onPress={toggleOverlay}
+                                title="Done"
+                           />
+                        </View>
+                    </View>
+              </Overlay>
+            );
+   }
 }

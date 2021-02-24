@@ -55,11 +55,12 @@ export default function App() {
         visits = newVisits;
     }
 
-    setInterval(() => { checkVisits(); removeVisit(); }, 10000);
+    //setInterval(() => { checkVisits(); removeVisit(); }, 10000);
   
     return (
         <View style={styles.dashboard}>
-            <Text style={styles.title}> Track and Trace </Text>
+            <Text style={styles.title}> Track & Trace </Text>
+            <Text style={styles.subtitle}> for users </Text>
             <Text style={styles.alertLevel}> Your alert status is 
                 <Text style={alertLevel ? alert.red : alert.green}> {String(alertLevel)}
                 </Text>
@@ -67,6 +68,7 @@ export default function App() {
             <RegisterPositiveTest/>
             <RegisterVaccine/>
             <CheckIn visits={visits}/>
+            <View><Text style={styles.footer}>brought to you by CyberCare LLD</Text></View>
         </View>
   );
 }
